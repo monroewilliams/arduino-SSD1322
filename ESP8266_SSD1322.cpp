@@ -26,10 +26,8 @@ BSD license, check license.txt for more information
 All text above, and the splash screen must be included in any redistribution
 *********************************************************************/
 
-#ifndef ESP8266    					//Added for compatibility with ESP8266 board
+#if defined(__AVR__)
 #include <avr/pgmspace.h>
-#endif
-#if !defined(__SAM3X8E__) &&  !defined(ESP8266) && !defined(ARDUINO_ARCH_ARC32)
 #include <util/delay.h>
 #endif
 #include <stdlib.h>
@@ -876,7 +874,7 @@ void ESP8266_SSD1322::fastDrawBitmap(int16_t x, int16_t y, const uint8_t *bitmap
   // Divide by 8, as 8 pixels per byte (1 bit per pixel) unless this not, then need to add 1 extra byte
   register uint8_t wInBytes = ((w % 8) > 0) ? wDiv8 + 1 : wDiv8;
   register uint8_t wStartByte = (xDiv8 < 0 ? abs(xDiv8) : 0);
-  register uint16_t hInRows = min(SSD1322_LCDHEIGHT - y, h);
+  register uint16_t hInRows = min(int16_t(SSD1322_LCDHEIGHT - y), h);
   register uint16_t bytePos = 0;
   pBuf += wStartByte;  // Move start of buffer up if X < 0
 //    wInBytes -= wStartByte;
