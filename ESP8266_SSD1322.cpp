@@ -1218,13 +1218,13 @@ int ESP8266_SSD1322::drawUnicode(unsigned int uniCode, int x, int y, int size)
 	{
 	  if (textcolor != textbgcolor)
 	  {
-		if (textsize == 1)
+		if (textsize_y == 1)
 		{
 			drawFastHLine(x, pY, width+gap, textbgcolor);
 		}
 		else
 		{
-			fillRect(x, pY, (width+gap)*textsize, textsize, textbgcolor);
+			fillRect(x, pY, (width+gap)*textsize_x, textsize_y, textbgcolor);
 		}
 	  }
 	  for (register int k = 0;k < w; k++)
@@ -1232,7 +1232,7 @@ int ESP8266_SSD1322::drawUnicode(unsigned int uniCode, int x, int y, int size)
 		line = pgm_read_byte(flash_address+w*i+k);
 		if(line)
 		{
-		  if (textsize==1){
+		  if (textsize_x==1){
 			pX = x + k*8;
 //Serial.print("pX=");
 //Serial.println(pX);
@@ -1246,22 +1246,22 @@ int ESP8266_SSD1322::drawUnicode(unsigned int uniCode, int x, int y, int size)
 			if(line & 0x1) drawPixel(pX+7, pY, textcolor);
 		  }
 		   else {
-			pX = x + k*8*textsize;
-			if(line & 0x80) fillRect(pX, pY, textsize, textsize, textcolor);
-			if(line & 0x40) fillRect(pX+textsize, pY, textsize, textsize, textcolor);
-			if(line & 0x20) fillRect(pX+2*textsize, pY, textsize, textsize, textcolor);
-			if(line & 0x10) fillRect(pX+3*textsize, pY, textsize, textsize, textcolor);
-			if(line & 0x8) fillRect(pX+4*textsize, pY, textsize, textsize, textcolor);
-			if(line & 0x4) fillRect(pX+5*textsize, pY, textsize, textsize, textcolor);
-			if(line & 0x2) fillRect(pX+6*textsize, pY, textsize, textsize, textcolor);
-			if(line & 0x1) fillRect(pX+7*textsize, pY, textsize, textsize, textcolor);
+			pX = x + k*8*textsize_x;
+			if(line & 0x80) fillRect(pX, pY, textsize_x, textsize_y, textcolor);
+			if(line & 0x40) fillRect(pX+textsize_x, pY, textsize_x, textsize_y, textcolor);
+			if(line & 0x20) fillRect(pX+2*textsize_x, pY, textsize_x, textsize_y, textcolor);
+			if(line & 0x10) fillRect(pX+3*textsize_x, pY, textsize_x, textsize_y, textcolor);
+			if(line & 0x8) fillRect(pX+4*textsize_x, pY, textsize_x, textsize_y, textcolor);
+			if(line & 0x4) fillRect(pX+5*textsize_x, pY, textsize_x, textsize_y, textcolor);
+			if(line & 0x2) fillRect(pX+6*textsize_x, pY, textsize_x, textsize_y, textcolor);
+			if(line & 0x1) fillRect(pX+7*textsize_x, pY, textsize_x, textsize_y, textcolor);
 		  }
 		}
 	  }
-	  pY+=textsize;
+	  pY+=textsize_y;
 	}
 //Serial.println("drawUnicode:X");
-	return (width+gap)*textsize;        // x +
+	return (width+gap)*textsize_x;        // x +
 }
 
 /***************************************************************************************
@@ -1375,7 +1375,7 @@ int ESP8266_SSD1322::drawCentreString(char *string, int dX, int poY, int size)
 #endif
         pointer++;
     }
-    len = len*textsize;
+    len = len*textsize_x;
     int poX = dX - len/2;
 
     if (poX < 0) poX = 0;
@@ -1428,7 +1428,7 @@ int ESP8266_SSD1322::drawRightString(char *string, int dX, int poY, int size)
         pointer++;
     }
 
-    len = len*textsize;
+    len = len*textsize_x;
     int poX = dX - len;
 
     if (poX < 0) poX = 0;
